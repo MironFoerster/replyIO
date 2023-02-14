@@ -1,0 +1,33 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reply-FileInOut</title>
+
+</head>
+<body style="text-align:center">
+    <form action="{% url 'FileInOut:index' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="FileIn">Drop input file here:</label>
+        <input type="file" id="FileIn" name="FileIn">
+        <br>
+        <br>
+        <p>Use Algorithm...</p>
+        {% for i in algos %}
+            <label for="algo{{ i }}">... {{ i }}</label>
+            <input type="radio" name="algo_number" id="algo{{ i }}" value="{{ i }}">
+
+            <br>
+        {% endfor %}
+        <br>
+        <input type="submit" value="Send File">
+    </form>
+    <br>
+
+    <a href="{{path_fileOut}}" download>Download OUTPUT file</a>
+    <a href="{{path_source}}" download>Download SOURCE file</a>
+
+</body>
+</html>
