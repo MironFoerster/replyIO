@@ -5,29 +5,67 @@
 <head>
     <meta charset="UTF-8">
     <title>Reply-FileInOut</title>
+    <style>
+        input[type=file] {
+            width: 400px;
+            height: 200px;
+            border: solid;
+        }
+        input[type=radio] {
+            width: 20px;
+            height: 20px;
+            transform: translateY(+25%);
+        }
+        input[type=submit] {
+            width: 100px;
+            height: 50px;
+            border: solid;
+        }
+        form * {
+            margin-left: 30px;
+        }
+        form {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
 
 </head>
 <body style="text-align:center">
+    <h4>Upload PYTHON ALGO</h4>
+    <form action="{% url 'FileInOut:upload' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" id="FileUp" name="FileUp">
+        <input type="submit" value="Send File">
+    </form>
+    <hl>
+    <hl>
+    <h4>Run INPUT TEXTFILE</h4>
     <form action="{% url 'FileInOut:index' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <label for="FileIn">Drop input file here:</label>
         <input type="file" id="FileIn" name="FileIn">
         <br>
         <br>
+        <div>
         <p>Use Algorithm...</p>
         {% for i in algos %}
-            <label for="algo{{ i }}">... {{ i }}</label>
-            <input type="radio" name="algo_number" id="algo{{ i }}" value="{{ i }}">
+            <label for="algo{{ i }}">{{ i }}</label>
+            <input type="radio" name="problem_id" id="algo{{ i }}" value="{{ i }}">
 
             <br>
         {% endfor %}
+        </div>
         <br>
         <input type="submit" value="Send File">
+        {% if path_out != "" and path_source != "" %}
+            <div style="display:flex; flex-direction: column;">
+                <a href="{{path_out}}" download>Download OUTPUT file</a>
+                <a href="{{path_source}}" download>Download SOURCE file</a>
+            </div>
+        {% endif %}
     </form>
     <br>
-
-    <a href="{{path_fileOut}}" download>Download OUTPUT file</a>
-    <a href="{{path_source}}" download>Download SOURCE file</a>
 
 </body>
 </html>
