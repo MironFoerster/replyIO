@@ -25,17 +25,15 @@ def index(request):
         download_path = os.path.join("http://", request.get_host(), "media", "FileInOut", str(request.POST['problem_id']))
         context['path_out'] = os.path.join(download_path, "out.txt")
         context['path_source'] = os.path.join(download_path, "source.txt")
-
         for i in request.FILES['FileIn']:
-            in_lines.append(i.decode('utf-8')[:-2])  #.split())  # z.B.: [['4'], ['1234', '7777'], ['1234', '4321'], ['helllo', 'strang', 'err']]
+            in_lines.append(i.decode('utf-8').replace('\r', '').replace('\n', ''))  #.split())  # z.B.: [['4'], ['1234', '7777'], ['1234', '4321'], ['helllo', 'strang', 'err']]
+
         in_lines.reverse()
 
         out_lines = []
         exec(open(os.path.join(problem_path, "run.py")).read(), {"in_lines": in_lines, "out_lines": out_lines})
-
         with open(os.path.join(problem_path, "out.txt"), 'w') as file_out:
             file_out.writelines(out_lines)
-
         
         print('algo completed, output file saved')
 
